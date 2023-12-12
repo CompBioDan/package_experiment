@@ -1,4 +1,4 @@
-Package: package_experiment
+Package: package.experiment
 Title: Estimate DPM accounts using TMB
 Version: 0.0.0.01
 Authors@R: 
