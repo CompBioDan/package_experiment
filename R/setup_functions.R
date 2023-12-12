@@ -169,13 +169,11 @@ setup_input_rates <- function(input_data_directory,
 #' @return A dataframe with region, time, sex, age, count, cohort
 split_flow_count_cohorts <- function(flows_df) {
   split_flows_df <- bind_rows(
-    flows_df %>% dplyr::select(c(region, time, sex, age, count)) %>%
-      dplyr::mutate(
+    flows_df %>% dplyr::select(c(region, time, sex, age, count)) %>%dplyr::mutate(
         cohort = time - age,
         count = count / 2
       ),
-    flows_df %>% dplyr::select(c(region, time, sex, age, count)) %>% dplyr::mutate(
-        cohort = time - age - 1,
+    flows_df %>% dplyr::select(c(region, time, sex, age, count)) %>% dplyr::mutate(cohort = time - age - 1,
         count = count / 2
       )
   )
@@ -194,9 +192,7 @@ split_flow_count_cohorts <- function(flows_df) {
 #' @return A dataframe with the derived sd
 derive_flow_uncertainty <- function(flow_df,
                                     flow_uncertainty_df,
-                                    flow_base_sd) {
-  flow_uncertainty <- left_join(flow_df,
-    bind_rows(
+                                    flow_base_sd) {flow_uncertainty <- left_join(flow_df, bind_rows(
       flow_uncertainty_df %>% dplyr::mutate(cohort = time - age),
       flow_uncertainty_df %>% dplyr::mutate(cohort = time - age - 1)
     ) %>%
