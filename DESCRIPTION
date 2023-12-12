@@ -1,4 +1,4 @@
-Package: dpm.tmb.pipeline
+Package: package_experiment
 Title: Estimate DPM accounts using TMB
 Version: 0.0.0.01
 Authors@R: 
