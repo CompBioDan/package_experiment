@@ -118,10 +118,13 @@ setup_input_rates <- function(input_data_directory,
                               rates_age_selection = c(0:105)) {
   rates_la <- read.csv(file.path(input_data_directory, rates_filename))
 
-  if ("sex" %in% colnames(rates_la)) {rates_la_model_input <- rates_la %>% dplyr::select(c(region, age, sex, time, rate)) %>%
+  if ("sex" %in% colnames(rates_la)) {
+    rates_la_model_input <- rates_la %>%
+      dplyr::select(c(region, age, sex, time, rate)) %>%
       dplyr::mutate(sex = first_upper(sex)) %>%
       dplyr::filter(age %in% rates_age_selection)
-  } else {rates_la_model_input <- rates_la %>%
+  } else {
+    rates_la_model_input <- rates_la %>%
       dplyr::select(c(region, age, time, rate)) %>%
       dplyr::filter(age %in% rates_age_selection)
   }
@@ -137,9 +140,11 @@ setup_input_rates <- function(input_data_directory,
 #' @param columns A vector containing columns to subset to for input into TMB DPM (default: region, age, sex, time, rate)
 #'
 #' @return A dataframe containing the required standardised rates
-prepare_rates <- function(rates, rates_age_selection = c(0:105)) {rates <- rates %>%
+prepare_rates <- function(rates, rates_age_selection = c(0:105)) {
+  rates <- rates %>%
     dplyr::filter(age %in% rates_age_selection)
-  if ("sex" %in% colnames(rates)) {rates <- rates %>%
+  if ("sex" %in% colnames(rates)) {
+    rates <- rates %>%
       mutate(sex = first_upper(sex))
   }
   return(rates)
@@ -156,7 +161,8 @@ prepare_rates <- function(rates, rates_age_selection = c(0:105)) {rates <- rates
 #' @return A dataframe containing the required standardised rates
 setup_input_rates <- function(input_data_directory,
                               rates_filename,
-                              rates_age_selection = c(0:105)) {rates_la <- read.csv(file.path(input_data_directory, rates_filename))
+                              rates_age_selection = c(0:105)) {
+  rates_la <- read.csv(file.path(input_data_directory, rates_filename))
   rates_la_model_input <- prepare_rates(rates_la, rates_age_selection)
   return(rates_la_model_input)
 }
@@ -169,13 +175,14 @@ setup_input_rates <- function(input_data_directory,
 #' @return A dataframe with region, time, sex, age, count, cohort
 split_flow_count_cohorts <- function(flows_df) {
   split_flows_df <- bind_rows(
-    flows_df %>% dplyr::select(c(region, time, sex, age, count)) %>%dplyr::mutate(
-        cohort = time - age,
-        count = count / 2
-      ),
-    flows_df %>% dplyr::select(c(region, time, sex, age, count)) %>% dplyr::mutate(cohort = time - age - 1,
-        count = count / 2
-      )
+    flows_df %>% dplyr::select(c(region, time, sex, age, count)) %>% dplyr::mutate(
+      cohort = time - age,
+      count = count / 2
+    ),
+    flows_df %>% dplyr::select(c(region, time, sex, age, count)) %>% dplyr::mutate(
+      cohort = time - age - 1,
+      count = count / 2
+    )
   )
 
   return(split_flows_df)
@@ -192,12 +199,13 @@ split_flow_count_cohorts <- function(flows_df) {
 #' @return A dataframe with the derived sd
 derive_flow_uncertainty <- function(flow_df,
                                     flow_uncertainty_df,
-                                    flow_base_sd) {flow_uncertainty <- left_join(flow_df, bind_rows(
-      flow_uncertainty_df %>% dplyr::mutate(cohort = time - age),
-      flow_uncertainty_df %>% dplyr::mutate(cohort = time - age - 1)
-    ) %>%
-      rename(region = LA_Code_2021),
-    by = c("region", "sex", "time", "age", "cohort")
+                                    flow_base_sd) {
+  flow_uncertainty <- left_join(flow_df, bind_rows(
+    flow_uncertainty_df %>% dplyr::mutate(cohort = time - age),
+    flow_uncertainty_df %>% dplyr::mutate(cohort = time - age - 1)
+  ) %>%
+    rename(region = LA_Code_2021),
+  by = c("region", "sex", "time", "age", "cohort")
   ) %>%
     dplyr::mutate(sd = ifelse(is.na(cv) | cv == 0,
       count,
