@@ -6,6 +6,9 @@ on:
 
 name: Style
 
+permissions:
+  contents: write
+
 jobs:
   style:
     runs-on: ubuntu-latest
