@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(dpm.tmb.pipeline)
+library(package_experiment)
 
-test_check("dpm.tmb.pipeline")
+test_check("package_experiment")
