@@ -13,7 +13,6 @@ test_that("'standardise_counts' returns ERROR with invalid dataframe columns", {
 
 
 test_that("'setup_input_counts' returns correct stocks dataframe if valid stock provided", {
-
   input_stocks <- data.frame(
     region = c("a", "a", "a", "a"),
     time = c(2011, 2011, 2011, 2011, 2012, 2012, 2012, 2012),
@@ -30,8 +29,10 @@ test_that("'setup_input_counts' returns correct stocks dataframe if valid stock 
     count = c(96.3, 49.6)
   )
 
-    expect_equal(standardise_counts(input_stocks, c(2011), c(1)),
-                 output_stocks)
+  expect_equal(
+    standardise_counts(input_stocks, c(2011), c(1)),
+    output_stocks
+  )
 })
 
 
