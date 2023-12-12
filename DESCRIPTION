@@ -1,0 +1,18 @@
+Package: dpm.tmb.pipeline
+Title: Estimate DPM accounts using TMB
+Version: 0.0.0.01
+Authors@R: 
+    c(person(
+    given = "Daniel", 
+    family = "Ward", 
+    email = "Daniel.Ward@ons.gov.uk", 
+    role = c("aut", "cre")))
+Description: Pipleline using Template Model Builder (TMB) implementation of the Dynamic Population Model (DPM)to estimate, extend, or forecast demographic accounts (population, immigration, and emigration)
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    data.table,
+    dplyr,
+    magrittr
